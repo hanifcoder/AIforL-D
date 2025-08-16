@@ -1,0 +1,821 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI & Contextual Learning Hub - Insurance Industry</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: #333;
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            padding: 30px;
+            text-align: center;
+            margin-bottom: 30px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(10px);
+        }
+
+        .header h1 {
+            color: #4a5568;
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .header p {
+            font-size: 1.2rem;
+            color: #6b7280;
+        }
+
+        .nav-tabs {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .nav-tab {
+            background: rgba(255, 255, 255, 0.9);
+            border: none;
+            padding: 15px 25px;
+            border-radius: 50px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            color: #4a5568;
+            font-size: 1rem;
+        }
+
+        .nav-tab:hover {
+            background: #667eea;
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(102, 126, 234, 0.4);
+        }
+
+        .nav-tab.active {
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            color: white;
+            transform: scale(1.05);
+        }
+
+        .content-section {
+            display: none;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            padding: 40px;
+            margin-bottom: 30px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(10px);
+            animation: fadeIn 0.5s ease-in;
+        }
+
+        .content-section.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .card-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+            margin-top: 30px;
+        }
+
+        .card {
+            background: linear-gradient(135deg, #f8fafc, #e2e8f0);
+            border-radius: 15px;
+            padding: 25px;
+            border-left: 5px solid #667eea;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+            border-left-color: #764ba2;
+        }
+
+        .card h3 {
+            color: #2d3748;
+            margin-bottom: 15px;
+            font-size: 1.3rem;
+        }
+
+        .card p {
+            color: #4a5568;
+            margin-bottom: 15px;
+        }
+
+        .prompt-builder {
+            background: #f7fafc;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+
+        .prompt-input {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid #e2e8f0;
+            border-radius: 10px;
+            font-size: 1rem;
+            margin-bottom: 15px;
+            transition: border-color 0.3s ease;
+        }
+
+        .prompt-input:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        .btn {
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            margin: 5px;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(102, 126, 234, 0.4);
+        }
+
+        .quiz-container {
+            background: #f8fafc;
+            border-radius: 15px;
+            padding: 25px;
+            margin: 20px 0;
+        }
+
+        .question {
+            font-weight: 600;
+            margin-bottom: 15px;
+            color: #2d3748;
+            font-size: 1.1rem;
+        }
+
+        .quiz-option {
+            display: block;
+            margin: 10px 0;
+            padding: 10px;
+            background: white;
+            border: 2px solid #e2e8f0;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .quiz-option:hover {
+            border-color: #667eea;
+            background: #f0f4ff;
+        }
+
+        .quiz-option.correct {
+            background: #d4edda;
+            border-color: #28a745;
+        }
+
+        .quiz-option.incorrect {
+            background: #f8d7da;
+            border-color: #dc3545;
+        }
+
+        .progress-bar {
+            background: #e2e8f0;
+            border-radius: 10px;
+            height: 20px;
+            overflow: hidden;
+            margin: 20px 0;
+        }
+
+        .progress-fill {
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            height: 100%;
+            width: 0%;
+            transition: width 0.5s ease;
+            border-radius: 10px;
+        }
+
+        .scenario {
+            background: linear-gradient(135deg, #fff5f5, #fed7d7);
+            border-radius: 15px;
+            padding: 25px;
+            margin: 20px 0;
+            border-left: 5px solid #e53e3e;
+        }
+
+        .best-practice {
+            background: linear-gradient(135deg, #f0fff4, #c6f6d5);
+            border-radius: 15px;
+            padding: 25px;
+            margin: 20px 0;
+            border-left: 5px solid #38a169;
+        }
+
+        .footer {
+            background: rgba(0, 0, 0, 0.8);
+            color: white;
+            text-align: center;
+            padding: 30px;
+            border-radius: 20px;
+            margin-top: 40px;
+        }
+
+        .footer h3 {
+            margin-bottom: 10px;
+            color: #667eea;
+        }
+
+        .interactive-demo {
+            background: linear-gradient(135deg, #ebf4ff, #dbeafe);
+            border-radius: 15px;
+            padding: 25px;
+            margin: 20px 0;
+            border: 2px dashed #667eea;
+        }
+
+        .tag {
+            display: inline-block;
+            background: #667eea;
+            color: white;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            margin: 3px;
+        }
+
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 2rem;
+            }
+            
+            .nav-tab {
+                padding: 10px 15px;
+                font-size: 0.9rem;
+            }
+            
+            .content-section {
+                padding: 25px;
+            }
+            
+            .card-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🚀 AI & Contextual Learning Hub</h1>
+            <p>Empowering Insurance Professionals with AI-Driven Learning Excellence</p>
+        </div>
+
+        <div class="nav-tabs">
+            <button class="nav-tab active" onclick="showSection('fundamentals')">AI Fundamentals</button>
+            <button class="nav-tab" onclick="showSection('prompting')">Smart Prompting</button>
+            <button class="nav-tab" onclick="showSection('contextual')">Contextual Learning</button>
+            <button class="nav-tab" onclick="showSection('scenarios')">Insurance Scenarios</button>
+            <button class="nav-tab" onclick="showSection('practice')">Practice Hub</button>
+            <button class="nav-tab" onclick="showSection('resources')">Resources</button>
+        </div>
+
+        <!-- AI Fundamentals Section -->
+        <div id="fundamentals" class="content-section active">
+            <h2>🤖 AI Fundamentals for Insurance Professionals</h2>
+            <div class="card-grid">
+                <div class="card" onclick="expandCard(this)">
+                    <h3>🧠 What is AI in Insurance?</h3>
+                    <p>Artificial Intelligence transforms how we process claims, assess risks, and create personalized learning experiences.</p>
+                    <div class="tag">Risk Assessment</div>
+                    <div class="tag">Claims Processing</div>
+                    <div class="tag">Customer Service</div>
+                </div>
+                
+                <div class="card" onclick="expandCard(this)">
+                    <h3>📊 AI Types & Applications</h3>
+                    <p>Machine Learning, Natural Language Processing, and Predictive Analytics in insurance operations.</p>
+                    <div class="tag">ML</div>
+                    <div class="tag">NLP</div>
+                    <div class="tag">Predictive Analytics</div>
+                </div>
+                
+                <div class="card" onclick="expandCard(this)">
+                    <h3>🎯 Benefits for L&D</h3>
+                    <p>Personalized learning paths, automated content generation, and intelligent assessment systems.</p>
+                    <div class="tag">Personalization</div>
+                    <div class="tag">Automation</div>
+                    <div class="tag">Assessment</div>
+                </div>
+            </div>
+
+            <div class="best-practice">
+                <h3>💡 Key Insight</h3>
+                <p>AI isn't replacing insurance professionals—it's amplifying their expertise and enabling more strategic, value-added work.</p>
+            </div>
+        </div>
+
+        <!-- Smart Prompting Section -->
+        <div id="prompting" class="content-section">
+            <h2>🎯 Master the Art of AI Prompting</h2>
+            
+            <div class="best-practice">
+                <h3>🔥 The CLEAR Framework</h3>
+                <p><strong>C</strong>ontext - <strong>L</strong>ength - <strong>E</strong>xamples - <strong>A</strong>udience - <strong>R</strong>ole</p>
+            </div>
+
+            <div class="card-grid">
+                <div class="card">
+                    <h3>📝 Context Setting</h3>
+                    <p>Always provide background information about the insurance domain, specific department, and business objectives.</p>
+                    <div class="interactive-demo">
+                        <strong>Example:</strong><br>
+                        "You are an expert insurance trainer creating content for new underwriters in commercial property insurance..."
+                    </div>
+                </div>
+                
+                <div class="card">
+                    <h3>🎭 Role Assignment</h3>
+                    <p>Assign specific roles to AI to get targeted, professional responses.</p>
+                    <div class="interactive-demo">
+                        <strong>Roles:</strong> Claims Adjuster, Risk Analyst, Learning Designer, Compliance Officer
+                    </div>
+                </div>
+            </div>
+
+            <div class="prompt-builder">
+                <h3>🛠️ Interactive Prompt Builder</h3>
+                <select id="roleSelect" class="prompt-input">
+                    <option value="">Select AI Role...</option>
+                    <option value="insurance training expert">Insurance Training Expert</option>
+                    <option value="claims processing specialist">Claims Processing Specialist</option>
+                    <option value="risk assessment analyst">Risk Assessment Analyst</option>
+                    <option value="learning experience designer">Learning Experience Designer</option>
+                </select>
+                
+                <textarea id="contextInput" class="prompt-input" placeholder="Describe your context (company, audience, objectives)..." rows="3"></textarea>
+                
+                <textarea id="taskInput" class="prompt-input" placeholder="What specific task do you need help with?" rows="2"></textarea>
+                
+                <button class="btn" onclick="generatePrompt()">🚀 Generate Smart Prompt</button>
+                
+                <div id="generatedPrompt" style="margin-top: 20px; padding: 20px; background: white; border-radius: 10px; border: 2px solid #667eea; display: none;">
+                    <h4>Your Optimized Prompt:</h4>
+                    <p id="promptOutput" style="font-family: monospace; background: #f8fafc; padding: 15px; border-radius: 5px; margin-top: 10px;"></p>
+                    <button class="btn" onclick="copyPrompt()">📋 Copy Prompt</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Contextual Learning Section -->
+        <div id="contextual" class="content-section">
+            <h2>🎓 Contextual Learning Mastery</h2>
+            
+            <div class="card-grid">
+                <div class="card">
+                    <h3>🔄 Situated Learning</h3>
+                    <p>Learning within realistic insurance scenarios and workplace contexts.</p>
+                    <div class="best-practice">
+                        <strong>Example:</strong> Instead of abstract policy rules, learners work through actual claim scenarios with real documentation and decision points.
+                    </div>
+                </div>
+                
+                <div class="card">
+                    <h3>🎯 Just-in-Time Learning</h3>
+                    <p>Delivering relevant knowledge precisely when needed in the workflow.</p>
+                    <div class="interactive-demo">
+                        <strong>Trigger Points:</strong>
+                        <ul style="margin-top: 10px;">
+                            <li>Complex claim review</li>
+                            <li>New product launch</li>
+                            <li>Regulatory changes</li>
+                            <li>Customer complaint handling</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="card">
+                    <h3>🧩 Microlearning</h3>
+                    <p>Bite-sized, focused learning modules that fit into busy work schedules.</p>
+                    <div class="tag">3-5 minutes</div>
+                    <div class="tag">Mobile-friendly</div>
+                    <div class="tag">Actionable</div>
+                </div>
+            </div>
+
+            <div class="scenario">
+                <h3>🎬 Contextual Learning Scenario</h3>
+                <p><strong>Situation:</strong> A claims adjuster encounters a complex commercial fire claim with potential fraud indicators.</p>
+                <p><strong>Contextual Support:</strong></p>
+                <ul style="margin-left: 20px; margin-top: 10px;">
+                    <li>Real-time access to fraud detection guidelines</li>
+                    <li>Interactive decision trees</li>
+                    <li>Expert consultation features</li>
+                    <li>Previous similar cases for reference</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Insurance Scenarios Section -->
+        <div id="scenarios" class="content-section">
+            <h2>🏢 Real Insurance Scenarios</h2>
+            
+            <div class="scenario">
+                <h3>📋 Scenario 1: Digital Claims Processing</h3>
+                <p><strong>Challenge:</strong> Training team on new AI-powered claims system</p>
+                <p><strong>AI Solution:</strong> Create personalized learning paths based on individual skill gaps</p>
+                <div style="margin-top: 15px;">
+                    <button class="btn" onclick="showSolution(1)">💡 View AI Approach</button>
+                    <div id="solution1" style="display: none; margin-top: 15px; padding: 15px; background: rgba(102, 126, 234, 0.1); border-radius: 10px;">
+                        <p><strong>Prompt Example:</strong> "Create a adaptive learning module for claims adjusters transitioning to digital processing. Include skill assessment, personalized content delivery, and progress tracking with real claim examples."</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="scenario">
+                <h3>🔍 Scenario 2: Risk Assessment Training</h3>
+                <p><strong>Challenge:</strong> Updating underwriters on new risk factors and assessment criteria</p>
+                <p><strong>AI Solution:</strong> Generate dynamic case studies and interactive simulations</p>
+                <div style="margin-top: 15px;">
+                    <button class="btn" onclick="showSolution(2)">💡 View AI Approach</button>
+                    <div id="solution2" style="display: none; margin-top: 15px; padding: 15px; background: rgba(102, 126, 234, 0.1); border-radius: 10px;">
+                        <p><strong>Prompt Example:</strong> "Generate 10 realistic commercial property risk scenarios with varying complexity levels. Include decision points, risk calculations, and feedback mechanisms for underwriter training."</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="scenario">
+                <h3>📞 Scenario 3: Customer Service Excellence</h3>
+                <p><strong>Challenge:</strong> Improving customer interaction skills across diverse insurance products</p>
+                <p><strong>AI Solution:</strong> Create conversational practice scenarios with AI feedback</p>
+                <div style="margin-top: 15px;">
+                    <button class="btn" onclick="showSolution(3)">💡 View AI Approach</button>
+                    <div id="solution3" style="display: none; margin-top: 15px; padding: 15px; background: rgba(102, 126, 234, 0.1); border-radius: 10px;">
+                        <p><strong>Prompt Example:</strong> "Design role-play scenarios for customer service reps handling complex insurance queries. Include difficult customer personalities, product variations, and emotional intelligence coaching."</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Practice Hub Section -->
+        <div id="practice" class="content-section">
+            <h2>🎮 Practice & Assessment Hub</h2>
+            
+            <div class="progress-bar">
+                <div id="overallProgress" class="progress-fill" style="width: 0%;"></div>
+            </div>
+            <p style="text-align: center; margin-bottom: 30px;">Overall Progress: <span id="progressText">0%</span></p>
+
+            <div class="quiz-container">
+                <h3>🧠 Knowledge Check: AI Prompting</h3>
+                <div id="quiz1">
+                    <div class="question">What is the most important element when creating an AI prompt for insurance training?</div>
+                    <div class="quiz-option" onclick="checkAnswer(this, false)">Using complex technical language</div>
+                    <div class="quiz-option" onclick="checkAnswer(this, true)">Providing clear context and specific objectives</div>
+                    <div class="quiz-option" onclick="checkAnswer(this, false)">Making the prompt as short as possible</div>
+                    <div class="quiz-option" onclick="checkAnswer(this, false)">Using only generic examples</div>
+                </div>
+            </div>
+
+            <div class="quiz-container">
+                <h3>🎯 Scenario Challenge: Contextual Learning</h3>
+                <div id="quiz2">
+                    <div class="question">Which approach best exemplifies contextual learning in insurance training?</div>
+                    <div class="quiz-option" onclick="checkAnswer(this, false)">Reading policy manuals in a classroom</div>
+                    <div class="quiz-option" onclick="checkAnswer(this, false)">Watching generic online videos</div>
+                    <div class="quiz-option" onclick="checkAnswer(this, true)">Solving real claim scenarios during actual work processes</div>
+                    <div class="quiz-option" onclick="checkAnswer(this, false)">Memorizing insurance terminology</div>
+                </div>
+            </div>
+
+            <div class="interactive-demo">
+                <h3>🔥 Challenge: Create Your Perfect Prompt</h3>
+                <p>Design a prompt for training new insurance agents on customer objection handling.</p>
+                <textarea id="challengePrompt" class="prompt-input" placeholder="Write your prompt here..." rows="4"></textarea>
+                <button class="btn" onclick="evaluatePrompt()">🎯 Get AI Feedback</button>
+                <div id="promptFeedback" style="margin-top: 15px; display: none;"></div>
+            </div>
+        </div>
+
+        <!-- Resources Section -->
+        <div id="resources" class="content-section">
+            <h2>📚 Learning Resources & Tools</h2>
+            
+            <div class="card-grid">
+                <div class="card">
+                    <h3>🤖 AI Tools for L&D</h3>
+                    <ul style="margin-left: 20px; margin-top: 10px;">
+                        <li>ChatGPT for content creation</li>
+                        <li>Claude for analysis and feedback</li>
+                        <li>Midjourney for visual content</li>
+                        <li>Synthesia for video training</li>
+                    </ul>
+                </div>
+                
+                <div class="card">
+                    <h3>📖 Prompt Libraries</h3>
+                    <p>Ready-to-use prompts for common insurance training scenarios</p>
+                    <button class="btn" onclick="showPromptLibrary()">View Library</button>
+                </div>
+                
+                <div class="card">
+                    <h3>🎓 Best Practices</h3>
+                    <ul style="margin-left: 20px; margin-top: 10px;">
+                        <li>Always test prompts before deployment</li>
+                        <li>Iterate based on learner feedback</li>
+                        <li>Maintain human oversight</li>
+                        <li>Focus on learning outcomes</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div id="promptLibrary" style="display: none; margin-top: 30px;">
+                <div class="best-practice">
+                    <h3>📚 Insurance Training Prompt Library</h3>
+                    <div style="margin-top: 20px;">
+                        <h4>Claims Processing Training:</h4>
+                        <div style="background: #f8fafc; padding: 15px; border-radius: 10px; margin: 10px 0; font-family: monospace; font-size: 0.9rem;">
+                            "Act as an experienced claims processing trainer. Create a step-by-step interactive scenario for handling a complex auto accident claim involving multiple parties, disputed liability, and potential fraud indicators. Include decision points, documentation requirements, and best practices for customer communication."
+                        </div>
+                        
+                        <h4>Underwriting Skill Development:</h4>
+                        <div style="background: #f8fafc; padding: 15px; border-radius: 10px; margin: 10px 0; font-family: monospace; font-size: 0.9rem;">
+                            "You are a senior underwriting mentor. Generate 5 progressive risk assessment exercises for commercial property insurance, starting with basic exposure identification and advancing to complex risk modeling. Include real-world factors, regulatory considerations, and profitability analysis."
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="footer">
+        <h3>Muhammad Hanif</h3>
+        <p>AI & L&D Professional | Passion for Sharing and Support</p>
+        <p style="margin-top: 10px; font-size: 0.9rem; opacity: 0.8;">Empowering insurance professionals through innovative learning solutions</p>
+    </div>
+
+    <script>
+        let currentProgress = 0;
+        let completedQuizzes = 0;
+        const totalQuizzes = 2;
+
+        function showSection(sectionId) {
+            // Hide all sections
+            const sections = document.querySelectorAll('.content-section');
+            sections.forEach(section => section.classList.remove('active'));
+            
+            // Remove active class from all tabs
+            const tabs = document.querySelectorAll('.nav-tab');
+            tabs.forEach(tab => tab.classList.remove('active'));
+            
+            // Show selected section
+            document.getElementById(sectionId).classList.add('active');
+            
+            // Add active class to clicked tab
+            event.target.classList.add('active');
+        }
+
+        function expandCard(card) {
+            card.style.transform = 'scale(1.02)';
+            card.style.background = 'linear-gradient(135deg, #ebf4ff, #dbeafe)';
+            setTimeout(() => {
+                card.style.transform = 'scale(1)';
+                card.style.background = 'linear-gradient(135deg, #f8fafc, #e2e8f0)';
+            }, 300);
+        }
+
+        function generatePrompt() {
+            const role = document.getElementById('roleSelect').value;
+            const context = document.getElementById('contextInput').value;
+            const task = document.getElementById('taskInput').value;
+            
+            if (!role || !context || !task) {
+                alert('Please fill in all fields to generate a comprehensive prompt!');
+                return;
+            }
+            
+            const prompt = `Act as a ${role} with expertise in insurance industry training and development.
+
+Context: ${context}
+
+Task: ${task}
+
+Please provide detailed, actionable guidance that includes:
+- Step-by-step approach
+- Industry-specific examples
+- Best practices
+- Potential challenges and solutions
+- Measurable outcomes
+
+Format your response for immediate implementation by insurance learning professionals.`;
+            
+            document.getElementById('promptOutput').textContent = prompt;
+            document.getElementById('generatedPrompt').style.display = 'block';
+        }
+
+        function copyPrompt() {
+            const promptText = document.getElementById('promptOutput').textContent;
+            navigator.clipboard.writeText(promptText).then(() => {
+                const btn = event.target;
+                const originalText = btn.textContent;
+                btn.textContent = '✅ Copied!';
+                btn.style.background = '#38a169';
+                setTimeout(() => {
+                    btn.textContent = originalText;
+                    btn.style.background = 'linear-gradient(45deg, #667eea, #764ba2)';
+                }, 2000);
+            });
+        }
+
+        function showSolution(num) {
+            const solution = document.getElementById(`solution${num}`);
+            if (solution.style.display === 'none') {
+                solution.style.display = 'block';
+                event.target.textContent = '🔼 Hide Solution';
+            } else {
+                solution.style.display = 'none';
+                event.target.textContent = '💡 View AI Approach';
+            }
+        }
+
+        function checkAnswer(option, isCorrect) {
+            const quiz = option.parentElement;
+            const options = quiz.querySelectorAll('.quiz-option');
+            
+            // Disable all options
+            options.forEach(opt => {
+                opt.style.pointerEvents = 'none';
+                if (opt === option) {
+                    opt.classList.add(isCorrect ? 'correct' : 'incorrect');
+                } else if (opt.getAttribute('onclick').includes('true')) {
+                    opt.classList.add('correct');
+                }
+            });
+            
+            // Update progress if this quiz hasn't been completed
+            if (!quiz.classList.contains('completed')) {
+                quiz.classList.add('completed');
+                if (isCorrect) {
+                    completedQuizzes++;
+                    updateProgress();
+                }
+            }
+        }
+
+        function updateProgress() {
+            currentProgress = (completedQuizzes / totalQuizzes) * 100;
+            document.getElementById('overallProgress').style.width = currentProgress + '%';
+            document.getElementById('progressText').textContent = Math.round(currentProgress) + '%';
+            
+            if (currentProgress === 100) {
+                setTimeout(() => {
+                    alert('🎉 Congratulations! You\'ve completed all assessments!');
+                }, 500);
+            }
+        }
+
+        function evaluatePrompt() {
+            const prompt = document.getElementById('challengePrompt').value;
+            const feedback = document.getElementById('promptFeedback');
+            
+            if (!prompt.trim()) {
+                alert('Please write a prompt first!');
+                return;
+            }
+            
+            let score = 0;
+            let feedbackText = '<h4>📊 Prompt Analysis:</h4><ul>';
+            
+            // Check for context
+            if (prompt.toLowerCase().includes('insurance') || prompt.toLowerCase().includes('agent')) {
+                score += 25;
+                feedbackText += '<li>✅ Good industry context</li>';
+            } else {
+                feedbackText += '<li>❌ Missing specific insurance context</li>';
+            }
+            
+            // Check for role definition
+            if (prompt.toLowerCase().includes('act as') || prompt.toLowerCase().includes('you are')) {
+                score += 25;
+                feedbackText += '<li>✅ Clear role definition</li>';
+            } else {
+                feedbackText += '<li>❌ Consider adding clear role assignment</li>';
+            }
+            
+            // Check for specific task
+            if (prompt.toLowerCase().includes('objection') && prompt.toLowerCase().includes('customer')) {
+                score += 25;
+                feedbackText += '<li>✅ Addresses the specific scenario</li>';
+            } else {
+                feedbackText += '<li>❌ Should focus more on customer objection handling</li>';
+            }
+            
+            // Check for examples or format requirements
+            if (prompt.toLowerCase().includes('example') || prompt.toLowerCase().includes('format')) {
+                score += 25;
+                feedbackText += '<li>✅ Requests examples or specific format</li>';
+            } else {
+                feedbackText += '<li>❌ Consider asking for examples or specific output format</li>';
+            }
+            
+            feedbackText += '</ul>';
+            feedbackText += `<div style="margin-top: 15px; padding: 15px; background: ${score >= 75 ? '#d4edda' : score >= 50 ? '#fff3cd' : '#f8d7da'}; border-radius: 10px;">`;
+            feedbackText += `<strong>Score: ${score}/100</strong><br>`;
+            
+            if (score >= 75) {
+                feedbackText += '🎉 Excellent prompt! You understand the key principles.';
+            } else if (score >= 50) {
+                feedbackText += '👍 Good start! Consider adding the missing elements.';
+            } else {
+                feedbackText += '💪 Keep practicing! Focus on context, role, and specific requirements.';
+            }
+            
+            feedbackText += '</div>';
+            
+            feedback.innerHTML = feedbackText;
+            feedback.style.display = 'block';
+        }
+
+        function showPromptLibrary() {
+            const library = document.getElementById('promptLibrary');
+            if (library.style.display === 'none') {
+                library.style.display = 'block';
+                event.target.textContent = 'Hide Library';
+            } else {
+                library.style.display = 'none';
+                event.target.textContent = 'View Library';
+            }
+        }
+
+        // Add some interactive animations on page load
+        window.addEventListener('load', function() {
+            const cards = document.querySelectorAll('.card');
+            cards.forEach((card, index) => {
+                setTimeout(() => {
+                    card.style.opacity = '0';
+                    card.style.transform = 'translateY(20px)';
+                    card.style.transition = 'all 0.5s ease';
+                    
+                    setTimeout(() => {
+                        card.style.opacity = '1';
+                        card.style.transform = 'translateY(0)';
+                    }, 100);
+                }, index * 100);
+            });
+        });
+
+        // Add hover effects for better interactivity
+        document.addEventListener('DOMContentLoaded', function() {
+            const navTabs = document.querySelectorAll('.nav-tab');
+            navTabs.forEach(tab => {
+                tab.addEventListener('mouseenter', function() {
+                    if (!this.classList.contains('active')) {
+                        this.style.background = 'rgba(102, 126, 234, 0.1)';
+                    }
+                });
+                
+                tab.addEventListener('mouseleave', function() {
+                    if (!this.classList.contains('active')) {
+                        this.style.background = 'rgba(255, 255, 255, 0.9)';
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>
